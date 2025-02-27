@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 const ClientError = require('../../exceptions/ClientError');
 
@@ -7,6 +8,10 @@ class AuthenticationsHandler {
     this._usersService = usersService;
     this._tokenManager = tokenManager;
     this._validator = validator;
+
+    this.postAuthenticationHandler = this.postAuthenticationHandler.bind(this);
+    this.putAuthenticationHandler = this.putAuthenticationHandler.bind(this);
+    this.deleteAuthenticationHandler = this.deleteAuthenticationHandler.bind(this);
   }
 
   async postAuthenticationHandler(request, h) {
@@ -48,4 +53,19 @@ class AuthenticationsHandler {
       },
     };
   }
+
+  async deleteAuthenticationHandler(request, h) {
+    this._validator.validateDeleteAuthenticationPayload(request.payload);
+
+    const { refreshToken } = request.payload;
+    await this._authenticationsService.verifyRefreshToken(refreshToken);
+    await this._authenticationsService.deleteRefreshToken(refreshToken);
+
+    return {
+      status: 'success',
+      message: 'Refresh token berhasil dihapus',
+    };
+  }
 }
+
+module.exports = AuthenticationsHandler;
