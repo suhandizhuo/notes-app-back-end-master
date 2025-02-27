@@ -9,10 +9,9 @@ exports.shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 exports.up = (pgm) => {
-  pgm.createTable('authentications', {
-    token: {
-      type: 'TEXT',
-      notNull: true,
+  pgm.addColumn('notes', {
+    owner: {
+      type: 'VARCHAR(50)',
     },
   });
 };
@@ -23,5 +22,5 @@ exports.up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 exports.down = (pgm) => {
-  pgm.dropTable('authentications');
+  pgm.dropColumn('notes', 'owner');
 };
