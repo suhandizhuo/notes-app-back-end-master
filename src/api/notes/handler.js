@@ -82,6 +82,7 @@ class NotesHandler {
     await this._service.verifyNoteOwner(id, credentialId);
 
     await this._service.deleteNoteById(id);
+
     return {
       status: 'success',
       message: 'Catatan berhasil dihapus',
